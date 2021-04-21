@@ -67,6 +67,7 @@ body{
   }
 
 }
+/*
 @media screen and (max-width: 730px) {
 	.container {
       width: 100%;
@@ -85,7 +86,7 @@ body{
   	display: none;
   }
 }
-
+*/
 @media screen and (max-width: 500px) {
 	.container {
       width: 100%;
