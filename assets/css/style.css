@@ -451,14 +451,35 @@ input[name="r"]{
 .information__table ul{
 	display: flex;
 }
+
+
 .information {
 	
-	background-color: #fff;
-	
-	box-shadow: 0px 12px 8px -1px rgba(0,0,0,0.25);
+	width: 200px;
+	box-shadow: -4px 4px 4px 4px rgba(0,0,0,0.25);
 	border-radius: 10px;
 	margin: 10px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	background-color: #fff;
+	opacity: .9;
 
+}
+
+.information img{
+	padding: 10px 0;
+	width: 70%;
+}
+
+.information p{
+	padding: 10px 0;
+	font-family: Roboto;
+	font-weight: 100;
+	font-size: 24px;
+	color: #111;
+	text-align: center;
 }
 
 
