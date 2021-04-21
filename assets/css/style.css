@@ -69,7 +69,10 @@ body{
 }
 */
 
-@media screen and (max-width: 810px) {
+@media screen and (max-width: 880px) {
+	.information__table{
+		flex-direction: column;
+	}
 	.container {
       width: 100%;
       overflow: hidden;
@@ -213,7 +216,7 @@ body{
 	margin: 0 10px;
 	padding: 5px 8px;
 	text-align: center;
-	font-family: Roboto;
+	font-family: Roboto, serif;
 	font-size: 18px;
 	font-weight: 100;
 	border: 1px solid black;
@@ -418,12 +421,13 @@ input[name="r"]{
 }
 
 .slide{
-	animation: sliderAnimate 30s infinie easy;
+	animation: sliderAnimate 30s;
 	transition: all .6s ease;
 	
 }
 
 .slide img{
+
 }
 
 #r1:checked ~ .s1{
@@ -441,12 +445,7 @@ input[name="r"]{
 
 /*---------------*/
 
-@media screen and (max-width: 1080px) {
-	.information__table{
-		flex-direction: column;
-	}
 
-}
 .information__table {
 	display: flex;
 	justify-content: center;
