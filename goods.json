@@ -1,0 +1,40 @@
+{
+  "1234" : {
+    "name": "Стул",
+    "cost": "1200",
+    "description": "Достаточно удобный",
+    "order" : 1,
+    "img" : "assets/images/product/chair_1.png",
+    "ordered_times": 0
+  },
+
+  "1235" : {
+    "name": "Диван",
+    "cost": "15000",
+    "description": "Достаточно удобный",
+    "order" : 2,
+    "img" : "assets/images/product/sofa_1.png",
+    "ordered_times": 0
+  },
+
+  "1236" : {
+    "name": "Шкаф",
+    "cost": "10000",
+    "description": "Достаточно вместительный",
+    "order" : 3,
+    "img" : "assets/images/product/cupboard_1.png",
+    "ordered_times": 0
+  },
+
+  "1237" : {
+    "name": "Стол",
+    "cost": "6000",
+    "description": "Большой",
+    "order" : 4,
+    "img" : "assets/images/product/table_1.png",
+    "ordered_times": 0
+  }
+
+
+}
+

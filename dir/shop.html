@@ -1,10 +1,132 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+  <meta charset="UTF-8">
+
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/shop.css">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;400;700;900&display=swap" rel="stylesheet">
+  <title>shop</title>
 </head>
 <body>
 
+<div class="header">
+
+  <nav class="header__up">
+    <ul class="up__menu__list container" >
+      <li><a href="" class="up__menu__link">Информация для покупателей</a></li>
+      <li><a href="" class="up__menu__link">Оплата и доставка</a></li>
+      <li><a href="" class="up__menu__link">Соискателям</a></li>
+      <li><a href="" class="up__menu__link">Отзывы</a></li>
+      <li><a href="" class="up__menu__link">Новости</a></li>
+      <li><a href="" class="up__menu__link">Контакты</a></li>
+      <li><a href="" class="up__menu__link">О нас</a></li>
+    </ul>
+  </nav>
+
+
+  <nav class="header__middle">
+    <ul class="middle__menu__list container">
+      <li class="logo"><a href=""><img src="../assets/images/icon_main.png" alt="logo"></a></li>
+      <li class="frnt__name">
+        <ul>
+          <li class="main__name"><a href="">FRNTR</a></li>
+          <li class="name__description">Мебельное производство</li>
+        </ul>
+      </li>
+      <li>
+        <ul class= "mini__container">
+          <li class="phone__icon"><img src="../assets/images/phone_icon.png" alt="phone__icon"></li>
+          <li class="frnt__phone">
+            <ul>
+              <li class="phone__number">8 (999) 876 54 32</li>
+              <li class="phone__number">8 (999) 123 45 67</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+
+
+      <li>
+        <ul class= "mini__container">
+          <li class="liked__icon"><img src="../assets/images/heart__icon.png" alt="liked"></li>
+          <li class="header__counter">0</li>
+        </ul>
+      </li>
+      <li>
+        <ul class= "mini__container">
+          <li class="basket__icon"><img src="../assets/images/basket__icon.png" alt="ordered"></li>
+          <li class="header__counter">0</li>
+        </ul>
+      </li>
+    </ul>
+
+
+  </nav>
+
+  <nav class="header__down">
+    <ul class="down__menu__list container">
+      <li>
+        <a href="../dir/shop.html" class="down__menu__link">Мебель для офиса</a>
+        <ul class="down__sub-menu__list">
+          <li><a href="" class="sub-menu__link">Мебель для сотрудников</a></li>
+          <li><a href="" class="sub-menu__link">Кабинеты эконом-класса</a></li>
+          <li><a href="" class="sub-menu__link">Кабинеты бизнес-класса</a></li>
+          <li><a href="" class="sub-menu__link">Кабинеты премиум класса</a></li>
+          <li><a href="" class="sub-menu__link">Кресла и стулья</a></li>
+          <li><a href="" class="sub-menu__link">Сейфы</a></li>
+        </ul>
+
+
+      </li>
+      <li>
+        <a href="" class="down__menu__link">Мебель для дома</a>
+
+
+      </li>
+      <li><a href="" class="down__menu__link">Дизайн проекты</a></li>
+      <li><a href="" class="down__menu__link">Мебель под заказ</a></li>
+      <li><a href="" class="down__menu__link">Распродажа</a></li>
+      <li><a href="" class="down__menu__link">Контакты</a></li>
+      <div class="search">
+        <form>
+          <input class="search__place" type="text" placeholder="Искать здесь...">
+          <button class="search__submit" type="submit"></button>
+        </form>
+      </div>
+    </ul>
+  </nav>
+</div>
+
+<div class="content__shop">
+
+  <div class="container container_shop">
+    <div class="goods-out">
+
+
+    </div>
+
+
+
+    <div class="cart">
+      <p class="name">Стул</p>
+      <img src="../assets/images/product/cupboard_1.png" alt="">
+      <div class="cost">1200</div>
+      <button class="liked">♡</button>
+      <button class="add-to-card">Купить</button>
+    </div>
+
+  </div>
+
+
+
+
+</div>
+
+
+<script src="../js/jquery-3.6.0.min.js"></script>
+<script src="../js/main.js"></script>
 </body>
 </html>

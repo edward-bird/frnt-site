@@ -1,0 +1,48 @@
+.cart{
+    width: 250px;
+    height: 340px;
+    border: 1px solid #000000;
+    margin: 30px;
+    float: left;
+    text-align: center;
+    padding: 20px;
+
+    font-family: Roboto, serif;
+    font-size: 16px;
+    font-weight: 100;
+    color: #000000;
+    text-transform: uppercase;
+}
+.cart img{
+    width: 80%;
+    margin: 30px 0;
+
+
+
+}
+
+.cost{
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.cart button{
+    background-color: #5feb6c;
+    margin: 10px;
+    font-family: Roboto, serif;
+    font-size: 16px;
+    font-weight: 400;
+    color: #000000;
+    text-transform: uppercase;
+    padding: 5px 10px;
+}
+
+.goods-out{
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+}
+.goods-out:after{
+    content: "";
+    display: block;
+    clear: both;
+}
