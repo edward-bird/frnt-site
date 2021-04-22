@@ -1,4 +1,13 @@
 .cart{
+
+    box-shadow: 0px 5px 5px 1px rgba(0,0,0,0.25);
+
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
     width: 250px;
     height: 340px;
     border: 1px solid #000000;
@@ -16,16 +25,23 @@
 .cart img{
     width: 80%;
     margin: 30px 0;
-
-
-
 }
 
 .cost{
+
+    position: absolute;
+    bottom: 17%;
     font-size: 20px;
     font-weight: bold;
 }
 
+.cart__buttons{
+    position: absolute;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+
+}
 .cart button{
     background-color: #5feb6c;
     margin: 10px;

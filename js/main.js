@@ -11,6 +11,11 @@ function goodsOut(data){
         out+= `<p class="name">${data[key].name}</p>`;
         out+= `<img src="../${data[key].img}" alt="">`;
         out+= `<div class="cost">${data[key].cost}</div>`;
+
+        out+= '<div class="cart__buttons">';
+        out+= '<button class="liked">♡</button>';
+        out+= '<button class="add-to-card">Купить</button>';
+        out+= '</div>';
         out+= '</div>';
     }
     $('.goods-out').html(out);
