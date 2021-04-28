@@ -229,6 +229,8 @@ body{
 /* Треться шапка */
 .header__down {
 	background-color: #eee;
+	position: relative;
+	z-index: 5;
 }
 .down__menu__list {
 	display: flex;
