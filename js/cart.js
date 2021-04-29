@@ -65,8 +65,36 @@ function saveCart(){
     localStorage.setItem('cart', JSON.stringify(cart));
 }
 
+function sendEmail(){
+    let ename = $('#ename').val();
+    let email = $('#email').val();
+    let ephone = $('#ephone').val();
+
+    if(ename !== '' && email !== '' && ephone !== ''){
+        if(isEmpty(cart)){
+            $.post(
+                "../core/mail.php",
+                {
+                    "ename" : ename,
+                    "email" : email,
+                    "ephone" : ephone,
+                    "cart" : cart
+                },
+                function (data){
+                    console.log(data);
+                }
+            );
+        } else {
+            alert('Корзина пуста');
+        }
+    } else {
+        alert('Заполните поля');
+    }
+}
+
 $(document).ready(function (){
     loadCart();
+    $('.send-email').on('click', sendEmail);
 })
 
 function isEmpty(object) {
