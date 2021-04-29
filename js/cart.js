@@ -20,7 +20,7 @@ function showCart(){
             for (let id in cart) {
                 out += `<div class="basket-cart">`
                 out += `<button data-id="${id}" class="delete-goods">x</button>`;
-                out += `<img class="basket-cart__img" src="../${goods[id].img}" alt="">`;
+                out += `<img class="basket-cart__img" src="../assets/images/product/${goods[id].img}" alt="">`;
                 out += `<p class="basket-cart__name">${goods[id].name}</p>`;
                 out += `<button data-id="${id}" class="minus-goods button_reright">-</button>`;
                 out += `<p class="basket-cart__count">${cart[id]}</p>`;
