@@ -12,6 +12,8 @@ function connect(){
     return $conn;
 }
 
+
+
 function init(){
     //вывожу список товаров
     $conn = connect();
@@ -65,7 +67,7 @@ function updateGoods(){
     }
 
     mysqli_close($conn);
-    writeJSON();
+    //writeJSON();
 
 
 }
@@ -88,10 +90,12 @@ function newGoods(){
     }
 
     mysqli_close($conn);
-    writeJSON();
+    //writeJSON();
 }
 
-function writeJSON(){
+
+
+function loadGoods(){
     $conn = connect();
     $sql = "SELECT * FROM goods";
     $result = mysqli_query($conn, $sql);
@@ -101,10 +105,59 @@ function writeJSON(){
         while($row = mysqli_fetch_assoc($result)) {
             $out[$row["id"]] = $row;
         }
-        file_put_contents('../goods.json', json_encode($out));
+        echo json_encode($out);
     } else {
         echo "0";
     }
     mysqli_close($conn);
+}
 
+
+
+function setOrdToDB(){
+    $conn = connect();
+    $ename = $_POST['ename'];
+    $email = $_POST['email'];
+    $ephone = $_POST['ephone'];
+    $cart = $_POST['cart'];
+
+
+    $sql = "INSERT INTO order_list (email, ephone, cart, name) VALUES ('$email', '$ephone', '$cart', '$ename')";
+
+    if ($conn->query($sql) === TRUE) {
+        echo 1;
+    } else {
+        echo "Error: " . $conn->error;
+    }
+
+    mysqli_close($conn);
+}
+
+function initOrders(){
+    $conn = connect();
+    $sql = "SELECT * FROM order_list";
+    $result = mysqli_query($conn, $sql);
+    if (mysqli_num_rows($result) > 0) {
+        $out = array();
+        while($row = mysqli_fetch_assoc($result)) {
+            $out[$row["id"]] = $row;
+        }
+        echo json_encode($out);
+    } else {
+        echo "0";
+    }
+    mysqli_close($conn);
+}
+
+function deleteOrder(){
+    $conn = connect();
+    $id = $_POST['id'];
+    $sql = "DELETE FROM `order_list` WHERE `order_list`.`id` = '$id'";
+
+    if ($conn->query($sql) === TRUE) {
+        echo 1;
+    } else {
+        echo "Error: " . $conn->error;
+    }
+    mysqli_close($conn);
 }

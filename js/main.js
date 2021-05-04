@@ -2,9 +2,19 @@ let cart = {};
 
 
 function init() {
-    $.getJSON("../goods.json", goodsOut);
+    //$.getJSON("../goods.json", goodsOut);
+    $.post(
+        "../admin/core.php",
+        {
+            "action" : "loadGoods"
+
+        },
+        goodsOut
+    );
 }
+
 function goodsOut(data){
+    data = JSON.parse(data);
     let out = '';
     for (let key in data){
         out+= '<div class="cart">';
@@ -32,7 +42,7 @@ function addToCart(){
         cart[id]++;
     }
     console.log(cart);
-    showMiniCart();
+    //showMiniCart();
     saveCart();
     basketCounter()
 
@@ -49,10 +59,11 @@ function showMiniCart(){
     }
     $('.mini-cart').html(out);
 }
+
 function loadCart(){
     if(localStorage.getItem('cart')){
         cart = JSON.parse(localStorage.getItem('cart'));
-        showMiniCart();
+        //showMiniCart();
     }
 }
 

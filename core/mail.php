@@ -1,6 +1,10 @@
 <?php
-$json = file_get_contents('../goods.json');
+//$json = file_get_contents('../goods.json');
+
+$json = $_POST['goods'];
 $json = json_decode($json, true);
+
+require_once '../admin/function.php';
 
 //письмо
 $message = '';
@@ -13,15 +17,18 @@ $cart = $_POST['cart'];
 $sum = 0;
 
 foreach ($cart as $id=>$count){
+
     $message .= $json[$id]['name'].' ---- ';
     $message .= $count.' -- ';
     $message .= $count*$json[$id]['cost'];
     $message .= '<br>';
     $sum = $sum + $count*$json[$id]['cost'];
+
+
 }
 $message .= 'Всего: '.$sum;
 
-//print_r($message);
+print_r($message);
 
 $to = 'adik090901@gmail.com'.',';
 $to .= $_POST['email'];

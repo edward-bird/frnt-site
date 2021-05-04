@@ -126,20 +126,73 @@
 
 </div>
 
-<div class="content-cart">
-    <div class="container">
-        <h2>Корзина</h2>
-        <div class="main-cart"></div>
+<div class="main">
+    <div class="content-cart">
+        <div class="container">
+            <h2>Корзина</h2>
+            <div class="main-cart"></div>
+
+
+        </div>
+    </div>
+
+    <div class="order container">
+        <a href="#popup" class="popup__link">ЗАКАЗАТЬ</a>
+    </div>
+
+    <div class="footer__contrainer">
+        <footer class="footer container">
+            <div class="footer__information">
+                <ul>
+                    <li class="footer__text-header"><a href="">Информация</a></li>
+                    <li class="footer__text"><a href="">Информация для покупателей</a></li>
+                    <li class="footer__text"><a href="">Оплата и доставка</a></li>
+                    <li class="footer__text"><a href="">Соискателям</a></li>
+                    <li class="footer__text"><a href="">Отзывы</a></li>
+                    <li class="footer__text"><a href="">Новости</a></li>
+                    <li class="footer__text"><a href="">Контакты</a></li>
+                    <li class="footer__text"><a href="">О нас</a></li>
+                </ul>
+
+                <ul>
+                    <li class="footer__text-header"><a href="">Меню</a></li>
+                    <li class="footer__text"><a href="">Мебель для дома</a></li>
+                    <li class="footer__text"><a href="">Мебель для офиса</a></li>
+                    <li class="footer__text"><a href="">Мебель для офиса</a></li>
+                    <li class="footer__text"><a href="">Мебель под заказ</a></li>
+                    <li class="footer__text"><a href="">Распродажа</a></li>
+                </ul>
+
+            </div>
+
+
+
+        </footer>
+    </div>
+
+
+    <div id = "popup" class="popup email-field">
+        <a href="#" class="popup-area"></a>
+        <div class="popup-body">
+
+            <div class="popup-content">
+                <a href="#" class="popup-close">x</a>
+
+                <div class="popup-title">
+
+                </div>
+
+                <div class="popup-text">
+                    <p class="email-field__text">Имя: <input type="text" id="ename" class="email-field__input"></p>
+                    <p class="email-field__text">Email: <input type="text" id="email" class="email-field__input"></p>
+                    <p class="email-field__text">Телефон: <input type="text" id="ephone" class="email-field__input"></p>
+                    <p class="email-field__text"><button class="send-email email-button" >Оформить заказ</button></p>
+                </div>
+
+            </div>
+    </div>
     </div>
 </div>
-
-<div class="email-field">
-    <p>Имя: <input type="text" id="ename"></p>
-    <p>Email: <input type="text" id="email"></p>
-    <p>Телефон: <input type="text" id="ephone"></p>
-    <p><button class="send-email">Заказать</button></p>
-</div>
-
 
 <script src="../js/jquery-3.6.0.min.js"></script>
 <script src="../js/cart.js"></script>

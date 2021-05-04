@@ -16,4 +16,16 @@ switch ($action) {
     case "newGoods":
         newGoods();
         break;
+    case "loadGoods":
+        loadGoods();
+        break;
+    case "setOrdToDB":
+        setOrdToDB();
+        break;
+    case  "initOrders":
+        initOrders();
+        break;
+    case "deleteOrder":
+        deleteOrder();
+        break;
 }
