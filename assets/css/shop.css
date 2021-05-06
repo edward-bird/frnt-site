@@ -24,6 +24,7 @@
     color: #000000;
     text-transform: uppercase;
 }
+
 .cart img{
     width: 90%;
     margin: 30px 0;
@@ -39,6 +40,7 @@
     font-weight: bold;
 }
 
+
 .cart__buttons{
     position: absolute;
     bottom: 0;
@@ -51,7 +53,7 @@
     border-radius: 10px;
     box-shadow: 0px 1px 4px 1px rgba(0,0,0,0.25);
 
-    background-color: #5feb6c;
+    background-color: #96ff58;
     margin: 10px;
     font-family: Roboto, serif;
     font-size: 16px;
@@ -59,6 +61,8 @@
     color: #000000;
     text-transform: uppercase;
     padding: 5px 10px;
+
+    transition: all .2s;
 }
 
 .liked{
@@ -89,11 +93,13 @@
 }
 
 .add-to-cart:hover{
-    background-color: deepskyblue;
+    box-shadow: 0 0 0 0;
+    background-color: #5feb6c;
+    border: 2px solid yellow;
 }
 
 .add-to-cart:active{
-    background-color: red;
+    border: 1px solid yellow;
 }
 
 .main-cart img{
@@ -181,13 +187,13 @@
 }
 
 .price-cart{
-
     font-size: 30px;
     border-bottom: 2px solid #5feb6c;
     padding: 5px 0;
 
     position: absolute;
-    right: 2%;
+    top: 10px;
+    right: 10px;
 }
 
 

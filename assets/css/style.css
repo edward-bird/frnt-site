@@ -179,7 +179,7 @@ body{
 	color: #000000;
 }
 .name__description {
-	font-family: Roboto;
+	font-family: Roboto, serif;
 	font-size: 16px;
 	font-weight: 100;
 	color: #000000;
@@ -197,7 +197,7 @@ body{
 	color: #000000;
 }
 .phone__number {
-	
+
 	padding: 10px 10px;
 	white-space: nowrap;
 }

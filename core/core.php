@@ -32,4 +32,14 @@ switch ($action) {
     case "checkAdmin":
         checkAdmin();
         break;
+    case "addReview":
+        addReview();
+        break;
+    case "loadReviews":
+        loadReviews();
+        break;
+    case "deleteReview":
+        deleteReview();
+        break;
+
 }

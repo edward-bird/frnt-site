@@ -4,7 +4,7 @@ let cart = {};
 function init() {
     //$.getJSON("../goods.json", goodsOut);
     $.post(
-        "../admin/core.php",
+        "../core/core.php",
         {
             "action" : "loadGoods"
 
@@ -18,12 +18,14 @@ function goodsOut(data){
     let out = '';
     for (let key in data){
         out+= '<div class="cart">';
+
         out+= `<p class="name">${data[key].name}</p>`;
+        out+= `<a href="goods#${key}">`;
         out+= `<img src="../assets/images/product/${data[key].img}" alt="">`;
+        out+=`</a>`;
         out+= `<div class="cost">${data[key].cost}</div>`;
 
         out+= '<div class="cart__buttons">';
-        out+= '<button class="liked"><img src="../assets/images/heart__icon.png" alt=""></button>';
         out+= `<button class="add-to-cart" data-id="${key}">В корзину</button>`;
         out+= '</div>';
         out+= '</div>';
@@ -75,6 +77,9 @@ function basketCounter(){
     }
     $('.basket-counter').html(counter);
 }
+
+
+
 
 $(document).ready(function (){
     init();

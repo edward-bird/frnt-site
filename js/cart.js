@@ -15,7 +15,7 @@ function showCart(){
         $('.main-cart').html('Корзина пуста');
     } else {
         $.post(
-            "../admin/core.php",
+            "../core/core.php",
             {
                 "action" : "loadGoods"
 
@@ -41,33 +41,13 @@ function showCart(){
                 $('.minus-goods').on('click', minusGoods);
             }
         );
-       /*$.getJSON('../goods.json', function (data) {
-            let goods = data;
-            let out = '';
-            for (let id in cart) {
-                out += `<div class="basket-cart">`
-                out += `<button data-id="${id}" class="delete-goods">x</button>`;
-                out += `<img class="basket-cart__img" src="../assets/images/product/${goods[id].img}" alt="">`;
-                out += `<p class="basket-cart__name">${goods[id].name}</p>`;
-                out += `<button data-id="${id}" class="minus-goods button_reright">-</button>`;
-                out += `<p class="basket-cart__count">${cart[id]}</p>`;
-                out += `<button data-id="${id}" class="plus-goods button_reright">+</button>`;
-                out += `<p class="price-cart">${cart[id] * goods[id].cost}</p>`
-                out += `</div>`;
-
-            }
-            $('.main-cart').html(out);
-            $('.delete-goods').on('click', deleteGoods);
-            $('.plus-goods').on('click', plusGoods);
-            $('.minus-goods').on('click', minusGoods);
-        });*/
     }
     basketCounter();
 }
 
 function getGoods(callback){
     let goods = $.post(
-        "../admin/core.php",
+        "../core/core.php",
         {
             "action" : "loadGoods"
         },
@@ -150,7 +130,7 @@ function addToDB(ename, email, ephone) {
     let cartP = JSON.stringify(cart);
     console.log(cartP);
     $.post(
-        "../admin/core.php",
+        "../core/core.php",
         {
             action : "setOrdToDB",
             ename : ename,

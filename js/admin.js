@@ -25,7 +25,7 @@ function init(){
         '</div>';
     $('body').html(out);
     $.post(
-        "core.php",
+        "../core/core.php",
         {
             "action" : "init"
         },
@@ -34,7 +34,7 @@ function init(){
 }
 
 function showGoods(data){
-    //console.log(data);
+
     data = JSON.parse(data);
     console.log(data);
     let out = '<select>';
@@ -61,27 +61,10 @@ function selectGoods(){
         $('.img_goods').html(`<img src="../assets/images/product/${data.img}" alt=""/>`);
         $('#gid').val(data.id);
     });
-    /*$.post(
-        "core.php",
-        {
-            "action" : "selectOneGoods",
-            "gid" : id
-        },
-        function (data){
-            data = JSON.parse(data);
-            $('#gname').val(data.name);
-            $('#gcost').val(data.cost);
-            $('#gdescription').val(data.description);
-            $('#gorder').val(data.ord);
-            $('#gimg').val(data.img);
-            $('.img_goods').html(`<img src="../assets/images/product/${data.img}" alt=""/>`);
-            $('#gid').val(data.id);
-        }
-    );*/
 }
 function selectOneGoods(id, func){
     $.post(
-        "core.php",
+        "../core/core.php",
         {
             "action" : "selectOneGoods",
             "gid" : id
@@ -104,7 +87,7 @@ function saveToDb(){
     let id = $('#gid').val();
     if (id !== ''){
         $.post(
-            "core.php",
+            "../core/core.php",
             {
                 "action" : "updateGoods",
                 "gid" : id,
@@ -125,7 +108,7 @@ function saveToDb(){
         );
     } else {
         $.post(
-            "core.php",
+            "../core/core.php",
             {
                 "action" : "newGoods",
                 "gid" : id,
@@ -179,7 +162,7 @@ function checkAdmin(){
     let password = $('#password').val();
 
     $.post(
-        "../admin/core.php",
+        "../core/core.php",
         {
             "action" : "checkAdmin",
             "login" : login,
@@ -199,7 +182,7 @@ function checkAdmin(){
 
 function getOrders() {
     $.post(
-        "../admin/core.php",
+        "../core/core.php",
         {
             "action" : "initOrders"
 
@@ -254,7 +237,7 @@ function getOrders() {
 function deleteOrder(){
     let id = $(this).attr('id');
     $.post(
-        "../admin/core.php",
+        "../core/core.php",
         {
             "action" : "deleteOrder",
             "id" : id

@@ -1,0 +1,97 @@
+body{
+    background-color: #f0f0f0;
+}
+.single_goods{
+    box-shadow: -5px 7px 15px #5a5a5a;
+    border-radius: 10px;
+    background-color: white;
+    font-family: Roboto, serif;
+    margin: 20px 0;
+    padding: 15px;
+
+    border-left: 3px solid #5feb6c;
+    border-right: 3px solid #5feb6c;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.name{
+    width: 100%;
+    padding: 10px;
+    font-size: 40px;
+    font-weight: bold;
+    margin: 20px 0;
+    border-bottom: 5px solid #5feb6c;
+}
+
+.single_goods img{
+    border-radius: 10px;
+    box-shadow: -2px 2px 10px #5a5a5a;
+
+    max-width: 50%;
+    margin: 20px 0;
+}
+
+.goods-description{
+    line-height: 30px;
+    min-height: 100px;
+    text-align: center;
+    font-weight: lighter;
+    font-size: 30px;
+    margin: 0 0 80px 0;
+}
+
+.description-container{
+    position: relative;
+    box-shadow: -3px 4px 7px #5a5a5a;
+
+    border-radius: 5px;
+    padding: 15px;
+
+
+    width: 80%;
+    font-family: Roboto, serif;
+    font-size: 20px;
+    margin: 20px;
+}
+
+.cost{
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    font-size: 40px;
+    padding: 10px;
+    background-color: #96ff58;
+    border-radius: 10px;
+    font-weight: lighter;
+}
+
+.cost::after{
+    content: " ₽";
+}
+
+.goods__button{
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+}
+
+.add-to-cart{
+    font-weight: lighter;
+    font-size: 40px;
+    padding: 10px;
+    background-color: #96ff58;
+    border-radius: 10px;
+
+    transition: all .1s;
+}
+
+.add-to-cart:hover{
+    background-color: #5feb6c;
+    border: 3px solid yellow;
+
+
+}

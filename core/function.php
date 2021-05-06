@@ -180,3 +180,49 @@ function checkAdmin(){
 
     mysqli_close($conn);
 }
+
+function addReview(){
+    $conn = connect();
+    $name = $_POST['name'];
+    $email = $_POST['email'];
+    $review = $_POST['review'];
+
+    $sql = "INSERT INTO reviews (name, email, review) VALUES ('$name', '$email', '$review')";
+    if ($conn->query($sql) === TRUE) {
+        echo 1;
+    } else {
+        echo "Error: " . $conn->error;
+    }
+    mysqli_close($conn);
+
+}
+
+function loadReviews(){
+    $conn = connect();
+    $sql = "SELECT * FROM reviews";
+    $result = mysqli_query($conn, $sql);
+    if (mysqli_num_rows($result) > 0) {
+        $out = array();
+        while($row = mysqli_fetch_assoc($result)) {
+            $out[$row["id"]] = $row;
+        }
+        echo json_encode($out);
+    } else {
+        echo "0";
+    }
+    mysqli_close($conn);
+}
+
+function deleteReview(){
+    $conn = connect();
+    $id = $_POST['id'];
+    $sql = "DELETE FROM `reviews` WHERE `reviews`.`id` = '$id'";
+
+    if ($conn->query($sql) === TRUE) {
+        echo 1;
+    } else {
+        echo "Error: " . $conn->error;
+    }
+    mysqli_close($conn);
+
+}
