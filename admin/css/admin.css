@@ -152,3 +152,49 @@ body{
 .delete_button:hover{
     background-color: red;
 }
+
+
+/*-------popup----------*/
+
+
+
+
+.popup{
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0,0,0,0.8);
+}
+
+.popup-content{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.login-field__text{
+    font-family: Roboto, serif;
+    margin: 20px 0;
+    color: #5feb6c;
+    font-size: 4vw;
+    padding: 10px;
+}
+
+.login-field__input{
+    font-size: 4vw;
+}
+
+.authorization{
+    font-family: Roboto, serif;
+    margin: 20px auto;
+    color: black;
+    font-size: 4vw;
+
+    background-color: #94e79c;
+    transition: all .2s;
+}
+
+.authorization:hover{
+    background-color: #5feb6c;
+}

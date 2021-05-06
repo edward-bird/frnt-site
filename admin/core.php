@@ -4,6 +4,7 @@ $action = $_POST['action'];
 require_once 'function.php';
 
 switch ($action) {
+
     case 'init':
         init();
         break;
@@ -27,5 +28,8 @@ switch ($action) {
         break;
     case "deleteOrder":
         deleteOrder();
+        break;
+    case "checkAdmin":
+        checkAdmin();
         break;
 }

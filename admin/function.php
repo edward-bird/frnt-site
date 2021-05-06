@@ -161,3 +161,22 @@ function deleteOrder(){
     }
     mysqli_close($conn);
 }
+
+function checkAdmin(){
+    $conn = connect();
+    $login = $_POST['login'];
+    $password = $_POST['password'];
+
+    $sql = "SELECT * FROM admin";
+    $result = mysqli_query($conn, $sql);
+    $out = false;
+    while ($row = mysqli_fetch_array($result)){
+        if($row['login'] == $login && $row['password'] == $password){
+            $out = $row['hash'];
+            break;
+        }
+    }
+    echo $out;
+
+    mysqli_close($conn);
+}

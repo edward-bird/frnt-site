@@ -1,5 +1,29 @@
-
+let hash = "a974b1b54d0177d843b036103ae61de5b4287c79d7015c851fc3c810f917e830041ef8145da16e9c9cbc150e0636ad4cf22cf04aa2377f862a79d483a517044d"
 function init(){
+    let out = '<div class="container">\n' +
+        '\n' +
+        '    <div class="admin-panel">\n' +
+        '        <div class="goods-out"></div>\n' +
+        '        <h2 class="admin-panel__h">Товар</h2>\n' +
+        '        <p>Имя <input type="text" id="gname"></p>\n' +
+        '        <p>Стоимость <input type="text" id="gcost"></p>\n' +
+        '        <p>Описание <textarea id="gdescription"></textarea></p>\n' +
+        '        <p>Изображение <input type="text" id="gimg"></p>\n' +
+        '        <div class="img_goods"></div>\n' +
+        '        <p>Категория <input type="text" id="gorder"></p>\n' +
+        '        <input type="hidden" id="gid">\n' +
+        '        <button class="add-to-db">Обновить</button>\n' +
+        '    </div>\n' +
+        '    <div class="ord_name">\n' +
+        '        <h1>ЗАКАЗЫ: </h1>\n' +
+        '    </div>\n' +
+        '    <div class="orders">\n' +
+        '\n' +
+        '    </div>\n' +
+        '\n' +
+        '\n' +
+        '</div>';
+    $('body').html(out);
     $.post(
         "core.php",
         {
@@ -126,10 +150,52 @@ function saveToDb(){
 
 
 $(document).ready(function () {
-    init();
-    getOrders();
-    $('.add-to-db').on('click', saveToDb);
+    if(sessionStorage.getItem('hash') === hash) {
+        init();
+        getOrders();
+        $('.add-to-db').on('click', saveToDb);
+    } else {
+        let out = '';
+        out += ` <div id = "popup" class="popup email-field">
+        <div class="popup-body">
+            <div class="popup-content">
+                <div class="popup-text">
+                    <p class="login-field__text">Логин: <input type="text" id="login" class="login-field__input"></p>
+                    <p class="login-field__text">Пароль: <input type="text" id="password" class="login-field__input"></p>
+                    <p class="login-field__text"><button class="authorization" >Авторизироваться</button></p>
+                </div>
+            </div>
+        </div>
+    </div>`;
+        $('body').html(out);
+
+    }
+
+    $('.authorization').on('click', checkAdmin);
 });
+
+function checkAdmin(){
+    let login = $('#login').val();
+    let password = $('#password').val();
+
+    $.post(
+        "../admin/core.php",
+        {
+            "action" : "checkAdmin",
+            "login" : login,
+            "password" : password
+
+        },
+        function (data){
+            if (data){
+                sessionStorage.setItem('hash', data);
+                location.reload();
+            } else {
+                alert("Неверный логин или пароль");
+            }
+        }
+    );
+}
 
 function getOrders() {
     $.post(
@@ -168,7 +234,7 @@ function getOrders() {
                         out_ += `</div>`;
                         let idCart = "cart-" + id;
                         let idCost = "fullCost-" + id;
-                        totalCost += parseInt(data_['cost']);
+                        totalCost += parseInt(data_['cost']) * parseInt(cart[id_]);
                         $(`#${idCost}`).html(totalCost);
                         $(`#${idCart}`).append(out_);
                     });
