@@ -141,6 +141,16 @@
     padding: 40px 20px;
 }
 
+.under-header{
+    width: 100%;
+    font-size: 30px;
+    font-family: Roboto, serif;
+    font-weight: 100;
+    color: #111111;
+    text-transform: uppercase;
+
+}
+
 .content-cart{
     margin: 10px auto;
 }

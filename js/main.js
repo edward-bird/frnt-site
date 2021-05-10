@@ -1,8 +1,7 @@
 let cart = {};
 
-
+/*
 function init() {
-    //$.getJSON("../goods.json", goodsOut);
     $.post(
         "../core/core.php",
         {
@@ -11,7 +10,7 @@ function init() {
         },
         goodsOut
     );
-}
+}*/
 
 function goodsOut(data){
     data = JSON.parse(data);
@@ -82,7 +81,7 @@ function basketCounter(){
 
 
 $(document).ready(function (){
-    init();
+   // init();
     loadCart();
     basketCounter();
 })

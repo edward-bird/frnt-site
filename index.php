@@ -39,21 +39,13 @@ switch ($route) {
         require 'templates/information/reviews.php';
         break;
 
+    case 'kitchen':
     case 'bedroom':
-        require 'templates/content/bedroom.php';
-        break;
     case 'children':
-        require 'templates/content/children.php';
-        break;
     case 'hallways':
-        require 'templates/content/hallways.php';
-        break;
-
     case 'livingroom':
-        require 'templates/content/living_room.php';
-        break;
     case 'office':
-        require 'templates/content/office.php';
+        require 'templates/content/content.php';
         break;
 
 

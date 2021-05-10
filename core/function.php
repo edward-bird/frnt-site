@@ -266,3 +266,22 @@ function getCategories(){
 
     mysqli_close($conn);
 }
+
+function getGoodsInRange(){
+    $conn = connect();
+    $rangeStart = $_POST['rangeStart'];
+    $rangeEnd = $_POST['rangeEnd'];
+    $sql = "SELECT * FROM goods WHERE `ord` BETWEEN '$rangeStart' AND '$rangeEnd'";
+    $result = mysqli_query($conn, $sql);
+    if (mysqli_num_rows($result) > 0) {
+        $out = array();
+        while($row = mysqli_fetch_assoc($result)) {
+            $out[$row["id"]] = $row;
+        }
+        echo json_encode($out);
+    } else {
+        echo "0";
+    }
+
+    mysqli_close($conn);
+}

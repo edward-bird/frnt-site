@@ -54,5 +54,8 @@ switch ($action) {
     case "getCategories":
         getCategories();
         break;
+    case "getGoodsInRange":
+        getGoodsInRange();
+        break;
 
 }
