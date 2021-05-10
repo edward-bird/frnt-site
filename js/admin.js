@@ -1,4 +1,3 @@
-let hash = "a974b1b54d0177d843b036103ae61de5b4287c79d7015c851fc3c810f917e830041ef8145da16e9c9cbc150e0636ad4cf22cf04aa2377f862a79d483a517044d"
 function init(){
     let out = '<div class="container">\n' +
         '\n' +
@@ -10,7 +9,12 @@ function init(){
         '        <p>Описание <textarea id="gdescription"></textarea></p>\n' +
         '        <p>Изображение <input type="text" id="gimg"></p>\n' +
         '        <div class="img_goods"></div>\n' +
-        '        <p>Категория <input type="text" id="gorder"></p>\n' +
+        '        <p>Выбрать/изменить категорию' +
+
+
+        '       <select class="order-select"> ' +
+        '       </select> ' +
+        '        </p>\n' +
         '        <input type="hidden" id="gid">\n' +
         '        <button class="add-to-db">Обновить</button>\n' +
         '    </div>\n' +
@@ -23,7 +27,8 @@ function init(){
         '\n' +
         '\n' +
         '</div>';
-    $('body').html(out);
+    $('.admin').html(out);
+    getOrderSelector();
     $.post(
         "../core/core.php",
         {
@@ -52,16 +57,32 @@ function selectGoods(){
     console.log(id);
 
     selectOneGoods(id, function (data){
+        console.log(JSON.parse(data));
         data = JSON.parse(data);
         $('#gname').val(data.name);
         $('#gcost').val(data.cost);
         $('#gdescription').val(data.description);
-        $('#gorder').val(data.ord);
+        $(`.order-select option[value=${data.ord}]`).prop("selected", true);
         $('#gimg').val(data.img);
         $('.img_goods').html(`<img src="../assets/images/product/${data.img}" alt=""/>`);
         $('#gid').val(data.id);
     });
 }
+function getOrderSelector(){
+    $.post(
+        "../core/core.php",
+        {
+            "action" : "getCategories"
+        },
+        function (data){
+            data = JSON.parse(data);
+            for (let id in data){
+                $('.order-select').append(`<option value="${data[id].id_category}">${data[id].category}</option>`)
+            }
+        }
+    )
+}
+
 function selectOneGoods(id, func){
     $.post(
         "../core/core.php",
@@ -70,21 +91,12 @@ function selectOneGoods(id, func){
             "gid" : id
         },
         func
-        /*function (data){
-            data = JSON.parse(data);
-            $('#gname').val(data.name);
-            $('#gcost').val(data.cost);
-            $('#gdescription').val(data.description);
-            $('#gorder').val(data.ord);
-            $('#gimg').val(data.img);
-            $('.img_goods').html(`<img src="../assets/images/product/${data.img}" alt=""/>`);
-            $('#gid').val(data.id);
-        }*/
     );
 }
 
 function saveToDb(){
     let id = $('#gid').val();
+    console.log($('.order-select').val());
     if (id !== ''){
         $.post(
             "../core/core.php",
@@ -94,7 +106,7 @@ function saveToDb(){
                 "gname" : $('#gname').val(),
                 "gcost" : $('#gcost').val(),
                 "gdescription" : $('#gdescription').val(),
-                "gorder" : $('#gorder').val(),
+                "gorder" : $('.order-select').val(),
                 "gimg" : $('#gimg').val(),
             },
             function (data){
@@ -115,7 +127,7 @@ function saveToDb(){
                 "gname" : $('#gname').val(),
                 "gcost" : $('#gcost').val(),
                 "gdescription" : $('#gdescription').val(),
-                "gorder" : $('#gorder').val(),
+                "gorder" : $('.order-select').val(),
                 "gimg" : $('#gimg').val(),
             },
             function (data){
@@ -132,48 +144,67 @@ function saveToDb(){
 
 
 
+
 $(document).ready(function () {
-    if(sessionStorage.getItem('hash') === hash) {
-        init();
-        getOrders();
-        $('.add-to-db').on('click', saveToDb);
-    } else {
-        let out = '';
-        out += ` <div id = "popup" class="popup email-field">
-        <div class="popup-body">
-            <div class="popup-content">
-                <div class="popup-text">
-                    <p class="login-field__text">Логин: <input type="text" id="login" class="login-field__input"></p>
-                    <p class="login-field__text">Пароль: <input type="text" id="password" class="login-field__input"></p>
-                    <p class="login-field__text"><button class="authorization" >Авторизироваться</button></p>
-                </div>
-            </div>
-        </div>
-    </div>`;
-        $('body').html(out);
-
-    }
-
-    $('.authorization').on('click', checkAdmin);
-});
-
-function checkAdmin(){
-    let login = $('#login').val();
-    let password = $('#password').val();
-
     $.post(
         "../core/core.php",
         {
-            "action" : "checkAdmin",
+            "action": "checkAdmin"
+        },
+        function (data) {
+            if (data !== '0') {
+                init();
+                getOrders();
+                $('.add-to-db').on('click', saveToDb);
+                $('body').append(`<button class="admin-exit">Выход</button>`);
+                $('.admin-exit').on('click', adminExit);
+            } else {
+                let out = '';
+                out += ` <div id = "popup" class="popup email-field">
+                    <div class="popup-body">
+                        <div class="popup-content">
+                            <div class="popup-text">
+                                <p class="login-field__text">Логин: <input type="text" id="login" class="login-field__input"></p>
+                                <p class="login-field__text">Пароль: <input type="text" id="password" class="login-field__input"></p>
+                                <p class="login-field__text"><button class="authorization" >Авторизироваться</button></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+                $('.admin').html(out);
+                $('.authorization').on('click', login);
+
+            }
+        }
+    );
+})
+
+function adminExit(){
+    $.post(
+        "../core/core.php",
+        {
+            "action": "exitAdmin"
+        },
+    )
+    location.reload();
+}
+
+function login(){
+    let login = $('#login').val();
+    let password = $('#password').val();
+    $.post(
+        "../core/core.php",
+        {
+            "action" : "login",
             "login" : login,
             "password" : password
 
         },
         function (data){
-            if (data){
-                sessionStorage.setItem('hash', data);
+            if (data !== '0'){
                 location.reload();
             } else {
+                console.log(data);
                 alert("Неверный логин или пароль");
             }
         }

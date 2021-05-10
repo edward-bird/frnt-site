@@ -503,6 +503,28 @@ input[name="r"]{
 
 .footer {
 	padding: 10px;
+	position: relative;
+}
+
+.admin-panel-link{
+	opacity: 0;
+	padding: 5px;
+	font-family: Roboto;
+	font-size: 18px;
+	border-radius: 3px;
+	border: 1px solid white;
+	position: absolute;
+	right: 10px;
+	bottom: 10px;
+	color: white;
+	cursor: default;
+
+	transition: all .3s;
+}
+
+.admin-panel-link:hover{
+	opacity: 1;
+	cursor: pointer;
 }
 
 .footer__information {
@@ -519,6 +541,10 @@ input[name="r"]{
 
 .footer__text-header{
 	padding: 0 0 10px 0;
+	font-family: Roboto, serif;
+	font-size: 28px;
+	font-weight: 700;
+	color: #fff;
 }
 
 .footer__text{

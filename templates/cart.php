@@ -1,17 +1,8 @@
-<div class="main">
+<div class="main container">
+    <h2 class="cart-header">Корзина</h2>
     <div class="content-cart">
-        <div class="container">
-            <h2>Корзина</h2>
             <div class="main-cart"></div>
-
-
-        </div>
     </div>
-
-    <div class="order container">
-        <a href="#popup" class="popup__link">ЗАКАЗАТЬ</a>
-    </div>
-
     <div id = "popup" class="popup email-field">
         <a href="#" class="popup-area"></a>
         <div class="popup-body">

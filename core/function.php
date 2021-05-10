@@ -1,4 +1,5 @@
 <?php
+session_start();
 $servername = "localhost";
 $username = "root";
 $password = "root";
@@ -35,14 +36,13 @@ function init(){
 function selectOneGoods(){
     $conn = connect();
     $id = $_POST['gid'];
-    $sql = "SELECT * FROM goods WHERE id = '$id'";
+    $sql = "SELECT * FROM goods WHERE goods.id = '$id'";
     $result = mysqli_query($conn, $sql);
-
     if (mysqli_num_rows($result) > 0) {
         $row = mysqli_fetch_assoc($result);
         echo json_encode($row);
     } else {
-        echo "0";
+        echo $conn->error;
     }
     mysqli_close($conn);
 }
@@ -163,21 +163,28 @@ function deleteOrder(){
 }
 
 function checkAdmin(){
+    if ($_SESSION['admin']){
+        echo $_SESSION['admin'];
+    } else {
+        echo 0;
+    }
+}
+function exitAdmin(){
+    $_SESSION['admin'] = '';
+}
+
+function login(){
     $conn = connect();
     $login = $_POST['login'];
-    $password = $_POST['password'];
-
-    $sql = "SELECT * FROM admin";
+    $password = md5($_POST['password']);
+    $sql = "SELECT * FROM `admin` WHERE `login` = '$login' AND `password` = '$password'";
     $result = mysqli_query($conn, $sql);
-    $out = false;
-    while ($row = mysqli_fetch_array($result)){
-        if($row['login'] == $login && $row['password'] == $password){
-            $out = $row['hash'];
-            break;
-        }
+    if(mysqli_num_rows($result) > 0){
+        $_SESSION['admin'] = 'admin';
+        echo $_SESSION['admin'];
+    } else {
+        echo 0;
     }
-    echo $out;
-
     mysqli_close($conn);
 }
 
@@ -225,4 +232,37 @@ function deleteReview(){
     }
     mysqli_close($conn);
 
+}
+
+function search(){
+    $conn = connect();
+    $name = $_POST['name'];
+    $sql = "SELECT * FROM `goods` WHERE `name` = '$name'";
+    $result = mysqli_query($conn, $sql);
+
+    if (mysqli_num_rows($result) > 0) {
+
+        echo json_encode(mysqli_fetch_assoc($result));
+    } else {
+        echo "0";
+    }
+    mysqli_close($conn);
+}
+
+function getCategories(){
+    $conn = connect();
+    $sql = "SELECT * FROM `category`";
+    $result = mysqli_query($conn, $sql);
+
+    if (mysqli_num_rows($result) > 0) {
+        $out = array();
+        while($row = mysqli_fetch_assoc($result)) {
+            $out[$row["id_category"]] = $row;
+        }
+        echo json_encode($out);
+    } else {
+        echo "0";
+    }
+
+    mysqli_close($conn);
 }

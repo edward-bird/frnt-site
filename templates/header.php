@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
 
     <meta name="viewport" content="width=device-width">
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
     <?php
-    switch ($route){
+    switch ($route) {
         case 'shop':
         case 'cart':
             echo '<link rel="stylesheet" href="../assets/css/shop.css">';
@@ -39,13 +39,10 @@
     <title>FRNTR</title>
 </head>
 <body>
-<?php
-
-if ($route != 'admin')
-    echo '<div class="header">
+<div class="header">
 
     <nav class="header__up">
-        <ul class="up__menu__list container" >
+        <ul class="up__menu__list container">
             <li><a href="delivery" class="up__menu__link">Оплата и доставка</a></li>
             <li><a href="founders" class="up__menu__link">Соискателям</a></li>
             <li><a href="reviews" class="up__menu__link">Отзывы</a></li>
@@ -57,7 +54,7 @@ if ($route != 'admin')
 
     <nav class="header__middle">
         <ul class="middle__menu__list container">
-            <li class="logo"><a href="/"><img src="assets/images/icon_main.png" alt="logo"></a></li>
+            <li class="logo"><a href="/"><img src="../assets/images/icon_main.png" alt="logo"></a></li>
             <li class="frnt__name">
                 <ul>
                     <li class="main__name"><a href="/">FRNTR</a></li>
@@ -65,9 +62,9 @@ if ($route != 'admin')
                 </ul>
             </li>
             <li>
-                <ul class= "mini__container">
+                <ul class="mini__container">
                     <li class="phone__icon">
-                        <img src="assets/images/phone_icon.png" alt="phone__icon">
+                        <img src="../assets/images/phone_icon.png" alt="phone__icon">
                     </li>
                     <li class="frnt__phone">
                         <ul>
@@ -76,20 +73,20 @@ if ($route != 'admin')
                         </ul>
                     </li>
                 </ul>
-                </li>
-                <li>
-                <ul class= "mini__container">
+            </li>
+            <li>
+                <ul class="mini__container">
                     <li class="basket__icon">
-                          <a href="cart">
-                            <img src="assets/images/basket__icon.png" alt="ordered">
-                          </a>
+                        <a href="cart">
+                            <img src="../assets/images/basket__icon.png" alt="ordered">
+                        </a>
                     </li>
                     <li class="header__counter basket-counter">0</li>
                 </ul>
-            
-                </li>
 
-            </ul>
+            </li>
+
+        </ul>
 
 
     </nav>
@@ -148,14 +145,11 @@ if ($route != 'admin')
             </li>
             <li><a href="" class="down__menu__link">Офисная мебель</a></li>
             <div class="search">
-                <form>
+                <div>
                     <input class="search__place" type="text" placeholder="Искать здесь...">
-                    <button class="search__submit" type="submit"></button>
-                </form>
+                    <button class="search__submit"></button>
+                </div>
             </div>
         </ul>
     </nav>
 </div>
-
-';
-?>

@@ -12,7 +12,7 @@ function loadCart(){
 function showCart(){
 
     if(!isEmpty(cart)){
-        $('.main-cart').html('Корзина пуста');
+        $('.main-cart').html('<p class="empty">Корзина пуста</p>');
     } else {
         $.post(
             "../core/core.php",
@@ -35,6 +35,9 @@ function showCart(){
                     out += `</div>`;
 
                 }
+                out += `<div class="order container">
+                            <a href="#popup" class="popup__link">ЗАКАЗАТЬ</a>
+                        </div>`
                 $('.main-cart').html(out);
                 $('.delete-goods').on('click', deleteGoods);
                 $('.plus-goods').on('click', plusGoods);

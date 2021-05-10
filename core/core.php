@@ -29,8 +29,14 @@ switch ($action) {
     case "deleteOrder":
         deleteOrder();
         break;
+    case "login":
+        login();
+        break;
     case "checkAdmin":
         checkAdmin();
+        break;
+    case "exitAdmin":
+        exitAdmin();
         break;
     case "addReview":
         addReview();
@@ -40,6 +46,13 @@ switch ($action) {
         break;
     case "deleteReview":
         deleteReview();
+        break;
+    case "search":
+        search();
+        break;
+
+    case "getCategories":
+        getCategories();
         break;
 
 }

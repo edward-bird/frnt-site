@@ -108,24 +108,43 @@
 
 /*----cart----*/
 
+
 .main{
+    position: relative;
     display: flex;
     flex-direction: column;
+    min-height: 65vh;
+
+    font-size: 40px;
+    font-family: Roboto, serif;
+    font-weight: 100;
+    color: #111111;
+    text-transform: uppercase;
+}
+
+.empty {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%);
 }
 
 
 
-.content-cart{
-    margin: 10px auto;
-}
-.content-cart h2 {
-    font-size: 30px;
+.cart-header{
+    width: 100%;
+    font-size: 40px;
     font-family: Roboto, serif;
     font-weight: 600;
     color: #111111;
     text-transform: uppercase;
     padding: 40px 20px;
 }
+
+.content-cart{
+    margin: 10px auto;
+}
+
 
 .basket-cart{
     position: relative;

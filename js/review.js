@@ -37,17 +37,36 @@ function loadReviews(){
             } else {
                 data = JSON.parse(data);
                 for (let id in data){
-                    out += `<div class="review">`;
+                    out += `<div class="review review-id-${data[id].id}">`;
                     out += `<h2 class="review-name">${data[id].name}</h2>`;
                     out += `<p class="review-text to-absolute">${data[id].review}</p>`;
-                    if (sessionStorage.getItem('hash') === hash){
-                        out += `<p class="review-email">email: ${data[id].email}</p>`;
-                        out += `<button class="review-delete" id="${data[id].id}">Удалить</button>`;
-                    }
+
+
+
+
                     out+= `</div>`;
                 }
             }
             $('.review-output').html(out);
+
+            $.post(
+                "../core/core.php",
+                {
+                    "action" : "checkAdmin"
+                },
+                function (inf){
+                    if(inf === 'admin'){
+                        for (let id in data){
+                            let out = '';
+                            out += `<p class="review-email">email: ${data[id].email}</p>`;
+                            out += `<button class="review-delete" id="${data[id].id}">Удалить</button>`;
+                            $(`.review-id-${data[id].id}`).append(out);
+                        }
+                    }
+                }
+
+            );
+
             $('.review-delete').on('click', deleteReview);
         }
     );

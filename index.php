@@ -1,10 +1,13 @@
- <?php
+<?php
 $route = $_GET['route'];
 
-require 'templates/header.php';
+$route_parts = explode('/', $route);
 
+if ($route != 'admin') {
+    require 'templates/header.php';
+}
 
-switch ($route){
+switch ($route) {
     case '':
         require 'templates/main.php';
         break;
@@ -20,7 +23,6 @@ switch ($route){
     case 'admin':
         require 'templates/admin.php';
         break;
-
     case 'about':
         require 'templates/information/about.php';
         break;
@@ -37,6 +39,22 @@ switch ($route){
         require 'templates/information/reviews.php';
         break;
 
+    case 'bedroom':
+        require 'templates/content/bedroom.php';
+        break;
+    case 'children':
+        require 'templates/content/children.php';
+        break;
+    case 'hallways':
+        require 'templates/content/hallways.php';
+        break;
+
+    case 'livingroom':
+        require 'templates/content/living_room.php';
+        break;
+    case 'office':
+        require 'templates/content/office.php';
+        break;
 
 
 
@@ -44,6 +62,8 @@ switch ($route){
         require 'templates/information/404.php';
         break;
 }
- if ($route != 'admin') {
-     require 'templates/footer.php';
- }
+
+if ($route != 'admin') {
+    require 'templates/footer.php';
+}
+
