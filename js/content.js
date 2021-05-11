@@ -59,7 +59,6 @@ function livingroom(){
     $('.cart-header').html('Гостиная');
     switch (id){
         case "":
-
             getFromDB(21, 25);
             break;
         case "1":

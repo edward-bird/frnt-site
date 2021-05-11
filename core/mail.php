@@ -1,6 +1,6 @@
 <?php
 //$json = file_get_contents('../goods.json');
-
+/*
 $json = $_POST['goods'];
 $json = json_decode($json, true);
 
@@ -43,3 +43,4 @@ if($m) {
 } else {
     echo 0;
 }
+*/

@@ -12,12 +12,12 @@
 
             <ul>
                 <li class="footer__text-header">Меню</li>
-                <li class="footer__text"><a href="">Кухня</a></li>
-                <li class="footer__text"><a href="">Гостиная</a></li>
-                <li class="footer__text"><a href="">Детская</a></li>
-                <li class="footer__text"><a href="">Спальня</a></li>
-                <li class="footer__text"><a href="">Прихожие</a></li>
-                <li class="footer__text"><a href="">Офисная мебель</a></li>
+                <li class="footer__text"><a href="kitchen">Кухня</a></li>
+                <li class="footer__text"><a href="livingroom">Гостиная</a></li>
+                <li class="footer__text"><a href="children">Детская</a></li>
+                <li class="footer__text"><a href="bedroom">Спальня</a></li>
+                <li class="footer__text"><a href="hallways">Прихожие</a></li>
+                <li class="footer__text"><a href="office">Офисная мебель</a></li>
             </ul>
 
         </div>

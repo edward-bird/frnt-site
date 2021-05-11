@@ -32,42 +32,78 @@ function init(){
     $.post(
         "../core/core.php",
         {
-            "action" : "init"
+            "action" : "getCategories"
         },
         showGoods
     );
 }
 
 function showGoods(data){
-
     data = JSON.parse(data);
     console.log(data);
-    let out = '<select>';
+    let out = '<select class="category_select">';
     out += '<option data-id="0">Новый товар</option>';
     for (let id in data){
-        out += `<option class="admin-panel__option" data-id="${id}">${data[id].name}</option>`;
+        out += `<option class="admin-panel__option" data-id="${id}">
+        ${data[id].name_parent.toUpperCase() + ' --- ' + data[id].name_category}</option>`;
     }
     out += `</select>`;
+    out += '<select class="product_select"></select>';
     $('.goods-out').html(out);
-    $('.goods-out select').on('change', selectGoods);
+    $('.category_select').on('change', selectCategory);
 }
 
-function selectGoods(){
-    let id = $('.goods-out select option:selected').attr('data-id');
-    console.log(id);
+function selectCategory(){
+    let id_category = $('.category_select option:selected').attr('data-id');
 
-    selectOneGoods(id, function (data){
-        console.log(JSON.parse(data));
-        data = JSON.parse(data);
-        $('#gname').val(data.name);
-        $('#gcost').val(data.cost);
-        $('#gdescription').val(data.description);
-        $(`.order-select option[value=${data.ord}]`).prop("selected", true);
-        $('#gimg').val(data.img);
-        $('.img_goods').html(`<img src="../assets/images/product/${data.img}" alt=""/>`);
-        $('#gid').val(data.id);
-    });
+    console.log(id_category);
+    $.post(
+        "../core/core.php",
+        {
+            "action" : "init",
+            "category_id": id_category
+        },
+        function (data){
+            let out = '';
+            if (data === '0') {
+                out += `<option class="admin-panel__option" data-id="0">В данной категории нет товара</option>`;
+            } else {
+                out += `<option class="admin-panel__option" data-id="0">Выберите товар...</option>`;
+                data = JSON.parse(data);
+                console.log(data);
+
+                for (let id in data){
+                    console.log(data[id]);
+                    out += `<option class="admin-panel__option" data-id="${data[id].id_product}">${data[id].name}</option>`;
+                }
+            }
+            $('.product_select').html(out);
+            $('.product_select').on('change', selectProduct);
+        }
+    )
+
+
+
 }
+
+function selectProduct(){
+    let id_product = $('.product_select option:selected').attr('data-id');
+    if(id_product !== '0') {
+        selectOneGoods(id_product, function (data) {
+            console.log(id_product);
+            data = JSON.parse(data);
+            $('#gname').val(data.name);
+            $('#gcost').val(data.cost);
+            $('#gdescription').val(data.description);
+            $(`.order-select option[value=${data.ord}]`).prop("selected", true);
+            $('#gimg').val(data.img);
+            $('.img_goods').html(`<img src="../assets/images/product/${data.img}" alt=""/>`);
+            $('#gid').val(data.id_product);
+        });
+    }
+}
+
+
 function getOrderSelector(){
     $.post(
         "../core/core.php",
@@ -77,7 +113,7 @@ function getOrderSelector(){
         function (data){
             data = JSON.parse(data);
             for (let id in data){
-                $('.order-select').append(`<option value="${data[id].id_category}">${data[id].category}</option>`)
+                $('.order-select').append(`<option value="${data[id].id_category}">${data[id].name_parent.toUpperCase() + ' --- ' + data[id].name_category}</option>`)
             }
         }
     )
@@ -113,8 +149,7 @@ function saveToDb(){
 
                 if (data == 1){
                     alert('Запись обновлена');
-                    init();
-                    //location.reload();
+                    location.reload();
                 }
             }
         );
@@ -131,11 +166,9 @@ function saveToDb(){
                 "gimg" : $('#gimg').val(),
             },
             function (data){
-
                 if (data == 1){
                     alert('Запись добавлена');
-                    init();
-                    //location.reload();
+                    location.reload();
                 }
             }
         );
@@ -220,39 +253,56 @@ function getOrders() {
         },
         function (data) {
             data = JSON.parse(data);
+            console.log(data);
             let out = '';
             for(let id in data){
-
                 out += `<div class="admin-panel_ord">`;
-                out += `<button class="delete_button" id=${data[id]['id']}>Удалить</button>`;
+                out += `<button class="delete_button" id=${id}>Удалить</button>`;
                 out += `<div class="information_ord">`
-                    out += `<p class="order_number">Заказ №: ${data[id]['id']}</p>`;
-                    out += `<p>Имя: ${data[id]['name']}</p>`;
-                    out += `<p>Email: ${data[id]['email']}</p>`;
-                    out += `<p>Телефон: ${data[id]['ephone']}</p>`;
+                    out += `<p class="order_number">Заказ №: ${id}</p>`;
+                    out += `<p>Имя: ${data[id]['client']['name_client']}</p>`;
+                    out += `<p>Email: ${data[id]['client']['email_client']}</p>`;
+                    out += `<p>Телефон: ${data[id]['client']['phone_client']}</p>`;
+                    if (data[id].hasOwnProperty('delivered')){
+                        if (data[id]['delivered'] != 1){
+                            data[id]['delivered'] = 'не доставлено';
+                        } else {
+                            data[id]['delivered'] = 'доставлено';
+                        }
+                        out += `<p class="order_number">Доставка</p>`;
+                        out += `<p>Улица: ${data[id]['adress']['street']}</p>`;
+                        out += `<p>Дом: ${data[id]['adress']['house']}</p>`;
+                        out += `<p>Квартира: ${data[id]['adress']['flat']}</p>`;
+                        out += `<p>Доставка: ${data[id]['delivered']}</p>`;
+                        if (data[id]['delivered'] === 'не доставлено') {
+                            out += `<button id=${id} class="set-delivered">Доставлено</button>`;
+                        }
+                    }
                 out += `</div>`
                 out += `<div class="information_product_" id="cart-${id}">`
-                let cart = JSON.parse(data[id]['cart']);
                 out += `<div class="total_cost" id="fullCost-${id}"></div>`
 
                 let totalCost = 0;
-                for(let id_ in cart){
-                    selectOneGoods(id_, function (data_){
+                for (let id_product in data[id]['products']){
+                    selectOneGoods(id_product, function (data_){
                         let out_ = '';
                         data_ = JSON.parse(data_);
                         out_ += `<div class="information_description">`;
                         out_ += `<p class="information_name">${data_['name']}</p>`;
                         out_ += `<img src="../../assets/images/product/${data_['img']}"}>`;
-                        out_ += `<p>Количество: ${cart[id_]}</p>`
+                        out_ += `<p>Количество: ${data[id]['products'][id_product]['number']}</p>`
                         out_ += `<p id="cost-${id}">Цена за штуку: ${data_['cost']}</p>`
                         out_ += `</div>`;
                         let idCart = "cart-" + id;
                         let idCost = "fullCost-" + id;
-                        totalCost += parseInt(data_['cost']) * parseInt(cart[id_]);
+                        totalCost += parseInt(data_['cost']) * parseInt(data[id]['products'][id_product]['number']);
                         $(`#${idCost}`).html(totalCost);
                         $(`#${idCart}`).append(out_);
                     });
                 }
+
+
+
                 out += `</div>`;
                 out += `</div>`;
                 out += `</div>`;
@@ -260,6 +310,20 @@ function getOrders() {
 
             $('.orders').html(out);
             $('.delete_button').on('click', deleteOrder);
+            $('.set-delivered').on('click', function (){
+                let idButton = $(this).attr('id');
+                $.post(
+                    "../core/core.php",
+                    {
+                        "action" : "setDelivered",
+                        "id" : idButton
+                    },
+                    function (data){
+                        console.log(data);
+                    }
+                );
+                getOrders();
+            });
 
         }
     );
@@ -272,8 +336,8 @@ function deleteOrder(){
         {
             "action" : "deleteOrder",
             "id" : id
-
-        });
+        }
+        );
     getOrders();
 }
 

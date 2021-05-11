@@ -29,6 +29,9 @@ switch ($action) {
     case "deleteOrder":
         deleteOrder();
         break;
+    case "setDelivered":
+        setDelivered();
+        break;
     case "login":
         login();
         break;

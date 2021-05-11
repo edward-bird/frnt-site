@@ -10,18 +10,24 @@ function loadCart(){
 }
 
 function showCart(){
-
     if(!isEmpty(cart)){
         $('.main-cart').html('<p class="empty">Корзина пуста</p>');
     } else {
+        let products = [];
+        for (let product in cart){
+            products.push(product);
+        }
+        //console.log(products);
         $.post(
             "../core/core.php",
             {
-                "action" : "loadGoods"
+                "action" : "loadGoods",
+                "products" : products
 
             },
             function (data) {
                 let goods = JSON.parse(data);
+                console.log(goods);
                 let out = '';
                 for (let id in cart) {
                     out += `<div class="basket-cart">`
@@ -48,8 +54,9 @@ function showCart(){
     basketCounter();
 }
 
+
 function getGoods(callback){
-    let goods = $.post(
+    $.post(
         "../core/core.php",
         {
             "action" : "loadGoods"
@@ -59,10 +66,6 @@ function getGoods(callback){
         }
     );
 }
-
-
-
-
 
 
 
@@ -101,8 +104,12 @@ function sendEmail(){
     let ename = $('#ename').val();
     let email = $('#email').val();
     let ephone = $('#ephone').val();
+    let street = $('#street').val();
+    let house = $('#house').val();
+    let flat = $('#flat').val();
 
-    if(ename !== '' && email !== '' && ephone !== ''){
+    if(ename !== '' && email !== '' && ephone !== '' &&
+        street !== '' && house !== '' && flat !== ''){
         if(isEmpty(cart)){
             getGoods(function (data){
                 $.post(
@@ -114,12 +121,10 @@ function sendEmail(){
                         "ephone" : ephone,
                         "cart" : cart
                     },
-                    function (data){
-
-                    }
                 );
             });
-            addToDB(ename, email, ephone);
+
+            addToDB(ename, email, ephone, street, house, flat);
 
         } else {
             alert('Корзина пуста');
@@ -129,19 +134,28 @@ function sendEmail(){
     }
 }
 
-function addToDB(ename, email, ephone) {
-    let cartP = JSON.stringify(cart);
-    console.log(cartP);
+function addToDB(ename, email, ephone, street, house, flat) {
+    //let cartP = JSON.stringify(cart);
+    let cartP = [];
+    for (let product in cart){
+        cartP.push([product, cart[product]]);
+    }
+
     $.post(
         "../core/core.php",
         {
-            action : "setOrdToDB",
-            ename : ename,
-            email : email,
-            ephone : ephone,
-            cart : cartP
+            "action" : "setOrdToDB",
+            "ename" : ename,
+            "email" : email,
+            "ephone" : ephone,
+            "street" : street,
+            "house" : house,
+            "flat" : flat,
+            "cart" : cartP,
+            "delivered" : "1"
         },
-        function (){
+        function (data){
+            console.log(data);
             $(location).attr('href', "#");
             alert("Заказ оформлен");
         }
@@ -151,6 +165,9 @@ function addToDB(ename, email, ephone) {
 $(document).ready(function (){
     loadCart();
     $('.send-email').on('click', sendEmail);
+    $('.checkbox').on('change', function (){
+        $('.delivery').toggle();
+    })
 })
 
 function isEmpty(object) {

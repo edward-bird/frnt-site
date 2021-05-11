@@ -295,6 +295,33 @@
     justify-content: center;
 }
 
+.popup-text{
+    display: flex;
+    flex-direction: row;
+    padding: 0 0 50px 0;
+}
+
+.base_order{
+    position: relative;
+}
+
+.delivery{
+    display: none;
+    margin: 0 40px;
+
+}
+
+.delivery-input{
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.delivery-text{
+    font-size: 14px;
+    font-weight: bold;
+}
+
+
 .popup-close{
     padding: 10px;
     position: absolute;
@@ -314,7 +341,6 @@
 }
 
 .email-button{
-
     font-family: Roboto, serif;
     font-size: 20px;
 

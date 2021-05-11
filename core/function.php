@@ -6,7 +6,7 @@ $password = "root";
 $dbname = "frntr_list";
 
 function connect(){
-    $conn = mysqli_connect("localhost", "root", "root", "frntr_list");
+    $conn = mysqli_connect("localhost", "root", "root", "furniture");
     if (!$conn) {
         die("Connection failed: " . mysqli_connect_error());
     }
@@ -18,17 +18,17 @@ function connect(){
 function init(){
     //вывожу список товаров
     $conn = connect();
-    $sql = "SELECT id, name FROM goods";
+    $category_id = $_POST["category_id"];
+    $sql = "SELECT id_product, name FROM product WHERE id_category = '$category_id'";
     $result = mysqli_query($conn, $sql);
-
     if (mysqli_num_rows($result) > 0) {
         $out = array();
         while($row = mysqli_fetch_assoc($result)) {
-            $out[$row["id"]] = $row;
+            $out[$row["id_product"]] = $row;
         }
         echo json_encode($out);
     } else {
-        echo "0";
+        echo '0';
     }
     mysqli_close($conn);
 }
@@ -36,7 +36,7 @@ function init(){
 function selectOneGoods(){
     $conn = connect();
     $id = $_POST['gid'];
-    $sql = "SELECT * FROM goods WHERE goods.id = '$id'";
+    $sql = "SELECT * FROM product WHERE product.id_product = '$id'";
     $result = mysqli_query($conn, $sql);
     if (mysqli_num_rows($result) > 0) {
         $row = mysqli_fetch_assoc($result);
@@ -58,7 +58,7 @@ function updateGoods(){
     $img = $_POST['gimg'];
 
 
-    $sql = "UPDATE goods SET name = '$name', cost = '$cost', description = '$description', ord = '$ord', img = '$img' WHERE id= '$id' ";
+    $sql = "UPDATE product SET name = '$name', cost = '$cost', description = '$description', id_category = '$ord', img = '$img' WHERE id_product = '$id' ";
 
     if ($conn->query($sql) === TRUE) {
         echo 1;
@@ -67,7 +67,6 @@ function updateGoods(){
     }
 
     mysqli_close($conn);
-    //writeJSON();
 
 
 }
@@ -81,7 +80,7 @@ function newGoods(){
     $img = $_POST['gimg'];
 
 
-    $sql = "INSERT INTO goods (name, cost, description, ord, img) VALUES ('$name', '$cost', '$description', '$ord', '$img')";
+    $sql = "INSERT INTO product (name, cost, description, id_category, img) VALUES ('$name', '$cost', '$description', '$ord', '$img')";
 
     if ($conn->query($sql) === TRUE) {
         echo 1;
@@ -90,20 +89,39 @@ function newGoods(){
     }
 
     mysqli_close($conn);
-    //writeJSON();
 }
 
 
 
-function loadGoods(){
+function getCategories(){
     $conn = connect();
-    $sql = "SELECT * FROM goods";
+    $sql = "SELECT * FROM `category` INNER JOIN `parent_category` ON category.id_parent = parent_category.id_parent";
     $result = mysqli_query($conn, $sql);
 
     if (mysqli_num_rows($result) > 0) {
         $out = array();
         while($row = mysqli_fetch_assoc($result)) {
-            $out[$row["id"]] = $row;
+            $out[$row["id_category"]] = $row;
+        }
+        echo json_encode($out);
+    } else {
+        echo "Error: " . $conn->error;
+    }
+
+    mysqli_close($conn);
+}
+
+
+function loadGoods(){
+    $conn = connect();
+    $products = $_POST['products'];
+    $sql = "SELECT * FROM product WHERE id_product IN (".implode(',', $products).")" ;
+    $result = mysqli_query($conn, $sql);
+
+    if (mysqli_num_rows($result) > 0) {
+        $out = array();
+        while($row = mysqli_fetch_assoc($result)) {
+            $out[$row["id_product"]] = $row;
         }
         echo json_encode($out);
     } else {
@@ -120,27 +138,80 @@ function setOrdToDB(){
     $email = $_POST['email'];
     $ephone = $_POST['ephone'];
     $cart = $_POST['cart'];
+    $delivered = $_POST['delivered'];
+    $sql = "INSERT INTO client (name_client, email_client, phone_client) VALUES ('$ename', '$email', '$ephone'); ";
+    loadToDb($conn,$sql);
+    $id_client = mysqli_insert_id($conn);
 
+    if($delivered === '1') {
+        $street = $_POST['street'];
+        $house = $_POST['house'];
+        $flat = $_POST['flat'];
+        $sql = "INSERT INTO adress (street, house, flat) VALUES ('$street', '$house', '$flat'); ";
+        loadToDb($conn,$sql);
+        $id_adress = mysqli_insert_id($conn);
+        $sql = "UPDATE client SET id_adress = '$id_adress' WHERE id_client = '$id_client'; ";
+        loadToDb($conn,$sql);
+        $sql = "INSERT INTO delivery (id_adress, id_client) VALUES  ('$id_adress', '$id_client'); ";
+        loadToDb($conn,$sql);
+        $id_delivery = mysqli_insert_id($conn);
+        $sql = "UPDATE adress SET id_delivery = '$id_delivery' WHERE  id_adress = '$id_adress'";
+        loadToDb($conn,$sql);
 
-    $sql = "INSERT INTO order_list (email, ephone, cart, name) VALUES ('$email', '$ephone', '$cart', '$ename')";
+    }
 
-    if ($conn->query($sql) === TRUE) {
-        echo 1;
+    $sql = "INSERT INTO client_order (id_client, delivery) VALUES  ('$id_client', '$delivered'); ";
+    loadToDb($conn,$sql);
+    $id_order = mysqli_insert_id($conn);
+    foreach ($cart as $position){
+        $sql = "INSERT INTO order_product (id_order, id_product, number) VALUES ('$id_order', '$position[0]', '$position[1]'); ";
+        loadToDb($conn,$sql);
+    }
+    mysqli_close($conn);
+}
+
+function loadToDb($conn, $sql){
+    if ($conn->query($sql) === TRUE){
+        echo "1";
     } else {
         echo "Error: " . $conn->error;
     }
-
-    mysqli_close($conn);
 }
 
 function initOrders(){
     $conn = connect();
-    $sql = "SELECT * FROM order_list";
+    $sql = "SELECT * FROM client_order";
     $result = mysqli_query($conn, $sql);
+
     if (mysqli_num_rows($result) > 0) {
         $out = array();
         while($row = mysqli_fetch_assoc($result)) {
-            $out[$row["id"]] = $row;
+            $id_client = $row['id_client'];
+            $id_order = $row['id_order'];
+            $delivery = $row['delivery'];
+
+            $sql = "SELECT * FROM client WHERE `id_client` = '$id_client'";
+            $client = mysqli_query($conn, $sql);
+
+            $out[$id_order]['client'] = mysqli_fetch_assoc($client);
+            $id_adress = $out[$id_order]['client']['id_adress'];
+
+            $sql = "SELECT id_product, number FROM order_product WHERE `id_order` = '$id_order'";
+            $products = mysqli_query($conn, $sql);
+            while ($row_product = mysqli_fetch_assoc($products)){
+                $out[$id_order]['products'][$row_product['id_product']] = $row_product;
+            }
+            if ($delivery === '1'){
+                $sql = "SELECT street, house, flat, id_delivery FROM adress WHERE id_adress = '$id_adress'";
+                $adress = mysqli_query($conn, $sql);
+                $out[$id_order]['adress'] = mysqli_fetch_assoc($adress);
+                $id_delivery = $out[$id_order]['adress']['id_delivery'];
+
+                $sql = "SELECT delivered FROM delivery WHERE id_delivery = '$id_delivery'";
+                $delivery_table = mysqli_query($conn, $sql);
+                $delivery_raw = mysqli_fetch_assoc($delivery_table);
+                $out[$id_order]['delivered'] = $delivery_raw['delivered'];
+            }
         }
         echo json_encode($out);
     } else {
@@ -152,13 +223,35 @@ function initOrders(){
 function deleteOrder(){
     $conn = connect();
     $id = $_POST['id'];
-    $sql = "DELETE FROM `order_list` WHERE `order_list`.`id` = '$id'";
+    $sql = "DELETE FROM `client_order` WHERE `id_order` = '$id'";
 
     if ($conn->query($sql) === TRUE) {
         echo 1;
     } else {
         echo "Error: " . $conn->error;
     }
+    mysqli_close($conn);
+}
+
+function setDelivered(){
+    $conn = connect();
+    $id = $_POST['id'];
+    $sql = "SELECT id_client FROM client_order WHERE id_order = '$id'";
+    $client = mysqli_query($conn, $sql);
+    $id_client = (mysqli_fetch_assoc($client)['id_client']);
+
+    $sql = "SELECT id_adress FROM client WHERE id_client = '$id_client'";
+    $adress = mysqli_query($conn, $sql);
+    $id_adress = (mysqli_fetch_assoc($adress)['id_adress']);
+
+    $sql = "SELECT id_delivery FROM adress WHERE id_adress = '$id_adress'";
+    $delivery = mysqli_query($conn, $sql);
+    $id_delivery = (mysqli_fetch_assoc($delivery)['id_delivery']);
+
+    $sql = "UPDATE delivery SET delivered = 1 WHERE id_delivery = '$id_delivery'";
+    loadToDb($conn, $sql);
+    //$delivery_table = mysqli_query($conn, $sql);
+
     mysqli_close($conn);
 }
 
@@ -234,6 +327,8 @@ function deleteReview(){
 
 }
 
+
+
 function search(){
     $conn = connect();
     $name = $_POST['name'];
@@ -249,39 +344,21 @@ function search(){
     mysqli_close($conn);
 }
 
-function getCategories(){
-    $conn = connect();
-    $sql = "SELECT * FROM `category`";
-    $result = mysqli_query($conn, $sql);
-
-    if (mysqli_num_rows($result) > 0) {
-        $out = array();
-        while($row = mysqli_fetch_assoc($result)) {
-            $out[$row["id_category"]] = $row;
-        }
-        echo json_encode($out);
-    } else {
-        echo "0";
-    }
-
-    mysqli_close($conn);
-}
 
 function getGoodsInRange(){
     $conn = connect();
     $rangeStart = $_POST['rangeStart'];
     $rangeEnd = $_POST['rangeEnd'];
-    $sql = "SELECT * FROM goods WHERE `ord` BETWEEN '$rangeStart' AND '$rangeEnd'";
+    $sql = "SELECT * FROM product WHERE `id_category` BETWEEN '$rangeStart' AND '$rangeEnd'";
     $result = mysqli_query($conn, $sql);
     if (mysqli_num_rows($result) > 0) {
         $out = array();
         while($row = mysqli_fetch_assoc($result)) {
-            $out[$row["id"]] = $row;
+            $out[$row["id_product"]] = $row;
         }
         echo json_encode($out);
     } else {
         echo "0";
     }
-
     mysqli_close($conn);
 }
