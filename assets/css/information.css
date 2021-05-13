@@ -129,6 +129,38 @@ span{
     background-color: red;
 }
 
+
+.review-answer{
+    position: absolute;
+    bottom: 10px;
+    left: 20px;
+
+    font-family: Roboto, serif;
+    font-size: 20px;
+    padding: 10px;
+    background-color: #94e79c;
+    transition: all .3s;
+}
+
+.review-answer:hover{
+    background-color: #96ff58;
+}
+
+.answer_to_DB{
+
+    font-family: Roboto, serif;
+    font-size: 20px;
+    margin: 20px;
+    padding: 10px;
+    background-color: #94e79c;
+    transition: all .3s;
+}
+
+.answer_to_DB:hover{
+    background-color: #96ff58;
+}
+
+
 .table{
     font-family: Roboto, serif;
     font-size: 20px;

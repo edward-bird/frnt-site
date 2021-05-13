@@ -262,6 +262,21 @@
     visibility: visible;
 }
 
+.button_delivery {
+    background-color: yellow;
+    padding: 5px 30px;
+    box-shadow: 3px 3px 3px #5a5a5a;
+    transition: all .3s;
+}
+
+.button_delivery:hover{
+    box-shadow: 1px 1px 1px black;
+}
+
+.button_delivery:active{
+    box-shadow: 0 0 0;
+    background-color: #96ff58;
+}
 
 .popup-area{
     position: absolute;
@@ -296,9 +311,16 @@
 }
 
 .popup-text{
+    font-weight: 400;
     display: flex;
     flex-direction: row;
     padding: 0 0 50px 0;
+}
+
+.popup-text span{
+    border-bottom: 5px solid #eeeeee;
+    font-weight: bold;
+    margin: 0 10px;
 }
 
 .base_order{

@@ -138,7 +138,14 @@ function setOrdToDB(){
     $email = $_POST['email'];
     $ephone = $_POST['ephone'];
     $cart = $_POST['cart'];
+
     $delivered = $_POST['delivered'];
+    if ($delivered === 'true') {
+        $delivered = '1';
+    } else {
+        $delivered = '0';
+    }
+
     $sql = "INSERT INTO client (name_client, email_client, phone_client) VALUES ('$ename', '$email', '$ephone'); ";
     loadToDb($conn,$sql);
     $id_client = mysqli_insert_id($conn);
@@ -167,15 +174,17 @@ function setOrdToDB(){
         $sql = "INSERT INTO order_product (id_order, id_product, number) VALUES ('$id_order', '$position[0]', '$position[1]'); ";
         loadToDb($conn,$sql);
     }
+    echo $id_order;
     mysqli_close($conn);
 }
 
 function loadToDb($conn, $sql){
-    if ($conn->query($sql) === TRUE){
+    $conn->query($sql);
+    /*if ($conn->query($sql) === TRUE){
         echo "1";
     } else {
         echo "Error: " . $conn->error;
-    }
+    }*/
 }
 
 function initOrders(){
@@ -283,11 +292,10 @@ function login(){
 
 function addReview(){
     $conn = connect();
-    $name = $_POST['name'];
-    $email = $_POST['email'];
     $review = $_POST['review'];
+    $id_order = $_POST['id_order'];
 
-    $sql = "INSERT INTO reviews (name, email, review) VALUES ('$name', '$email', '$review')";
+    $sql = "INSERT INTO reviews (id_order, review) VALUES ('$id_order', '$review')";
     if ($conn->query($sql) === TRUE) {
         echo 1;
     } else {
@@ -297,18 +305,34 @@ function addReview(){
 
 }
 
+function addAnswer(){
+    $conn = connect();
+    $answer = $_POST['answer'];
+    $id_review = $_POST['id_review'];
+
+    $sql = "INSERT INTO answer_reviews (id_review, answer) VALUES ('$id_review', '$answer')";
+    $conn->query($sql);
+    $id_answer = mysqli_insert_id($conn);
+    $sql = "UPDATE reviews SET id_answer = '$id_answer'WHERE id_review = '$id_review'";
+    if ($conn->query($sql) === TRUE) {
+        echo 1;
+    } else {
+        echo "Error: " . $conn->error;
+    }
+    mysqli_close($conn);
+}
 function loadReviews(){
     $conn = connect();
-    $sql = "SELECT * FROM reviews";
+    $sql = "SELECT * FROM answer_reviews RIGHT OUTER JOIN reviews ON reviews.id_answer = answer_reviews.id_answer";
     $result = mysqli_query($conn, $sql);
     if (mysqli_num_rows($result) > 0) {
         $out = array();
         while($row = mysqli_fetch_assoc($result)) {
-            $out[$row["id"]] = $row;
+            $out[$row['id_review']] = $row;
         }
         echo json_encode($out);
     } else {
-        echo "0";
+        echo "Error: " . $conn->error;
     }
     mysqli_close($conn);
 }
@@ -316,7 +340,7 @@ function loadReviews(){
 function deleteReview(){
     $conn = connect();
     $id = $_POST['id'];
-    $sql = "DELETE FROM `reviews` WHERE `reviews`.`id` = '$id'";
+    $sql = "DELETE FROM reviews WHERE id_review = '$id'";
 
     if ($conn->query($sql) === TRUE) {
         echo 1;

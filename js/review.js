@@ -1,19 +1,19 @@
-let hash = "a974b1b54d0177d843b036103ae61de5b4287c79d7015c851fc3c810f917e830041ef8145da16e9c9cbc150e0636ad4cf22cf04aa2377f862a79d483a517044d"
 function addReview(){
-    if($('#name').val() != '' && $('#review').val() != ''){
+    if($('#name').val() !== '' && $('#review').val() !== ''){
         $.post(
             "../core/core.php",
             {
                 "action" : "addReview",
-                "name" : $('#name').val(),
-                "email" : $('#email').val(),
                 "review" : $('#review').val(),
+                "id_order" : $('#id_order').val(),
             },
             function (data){
                 if (data == 1){
                     alert('Отзыв добавлен');
                     loadReviews();
                     //location.reload();
+                } else {
+                    alert('Заказ не найден');
                 }
             }
         );
@@ -37,13 +37,12 @@ function loadReviews(){
             } else {
                 data = JSON.parse(data);
                 for (let id in data){
-                    out += `<div class="review review-id-${data[id].id}">`;
-                    out += `<h2 class="review-name">${data[id].name}</h2>`;
+                    out += `<div class="review review-id-${data[id].id_review}">`;
+                    out += `<h2 class="review-name">Заказ №${data[id].id_order}</h2>`;
                     out += `<p class="review-text to-absolute">${data[id].review}</p>`;
-
-
-
-
+                    if (data[id].id_answer) {
+                        out += `<p class="answer-text to-absolute">${data[id].answer}</p>`;
+                    }
                     out+= `</div>`;
                 }
             }
@@ -58,18 +57,51 @@ function loadReviews(){
                     if(inf === 'admin'){
                         for (let id in data){
                             let out = '';
-                            out += `<p class="review-email">email: ${data[id].email}</p>`;
-                            out += `<button class="review-delete" id="${data[id].id}">Удалить</button>`;
-                            $(`.review-id-${data[id].id}`).append(out);
+                            out += `<button class="review-delete" id="${data[id].id_review}">Удалить</button>`;
+                            if (!data[id].id_answer) {
+                                out += `<button class="review-answer" id="${data[id].id_review}">Добавить ответ</button>`;
+                                out += `<div class="answer" id="answer-${data[id].id_review}"></div>`;
+                            }
+                            $(`.review-id-${data[id].id_review}`).append(out);
+
                         }
                     }
+                    $('.review-delete').on('click', deleteReview);
+                    $('.review-answer').on('click', addAnswer);
                 }
 
             );
 
-            $('.review-delete').on('click', deleteReview);
+
         }
     );
+}
+
+function addAnswer(){
+    let id_review = $(this).attr('id');
+    let out = '';
+    out += `<p>Ответ: <textarea class="answer-text" id="answer_to_review-${id_review}"></textarea></p>`;
+    out += `<button class="answer_to_DB" id="${id_review}">Сохранить ответ</button>`
+    $(`#answer-${id_review}`).html(out);
+    $('.answer_to_DB').on('click', answerToDB);
+}
+
+
+function answerToDB(){
+    let id_review = $(this).attr('id');
+    let answer = $(`#answer_to_review-${id_review}`).val();
+    $.post(
+        "../core/core.php",
+            {
+                "action" : "addAnswer",
+                "id_review" : id_review,
+                "answer" : answer
+            },
+            function (){
+                loadReviews();
+            }
+    );
+
 }
 
 $(document).ready(function (){

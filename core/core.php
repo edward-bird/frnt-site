@@ -44,6 +44,9 @@ switch ($action) {
     case "addReview":
         addReview();
         break;
+    case "addAnswer":
+        addAnswer();
+        break;
     case "loadReviews":
         loadReviews();
         break;

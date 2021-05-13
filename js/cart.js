@@ -104,12 +104,14 @@ function sendEmail(){
     let ename = $('#ename').val();
     let email = $('#email').val();
     let ephone = $('#ephone').val();
+
     let street = $('#street').val();
     let house = $('#house').val();
     let flat = $('#flat').val();
 
-    if(ename !== '' && email !== '' && ephone !== '' &&
-        street !== '' && house !== '' && flat !== ''){
+    let delivered = $('.delivery').is(':visible');
+
+    if(ename !== '' && email !== '' && ephone !== ''){
         if(isEmpty(cart)){
             getGoods(function (data){
                 $.post(
@@ -124,7 +126,7 @@ function sendEmail(){
                 );
             });
 
-            addToDB(ename, email, ephone, street, house, flat);
+            addToDB(ename, email, ephone, street, house, flat, delivered);
 
         } else {
             alert('Корзина пуста');
@@ -134,8 +136,7 @@ function sendEmail(){
     }
 }
 
-function addToDB(ename, email, ephone, street, house, flat) {
-    //let cartP = JSON.stringify(cart);
+function addToDB(ename, email, ephone, street, house, flat, delivered) {
     let cartP = [];
     for (let product in cart){
         cartP.push([product, cart[product]]);
@@ -152,12 +153,17 @@ function addToDB(ename, email, ephone, street, house, flat) {
             "house" : house,
             "flat" : flat,
             "cart" : cartP,
-            "delivered" : "1"
+            "delivered" : delivered
         },
         function (data){
-            console.log(data);
-            $(location).attr('href', "#");
-            alert("Заказ оформлен");
+            let out = '';
+            out += '<div >';
+            out += '<p class="popup-text">Ваш заказ оформлен</p>';
+            out += `<p class="popup-text">Номер вашего заказа: <span>${data}</span></p>`;
+            out += `<p class="popup-text">Сохраните его для отзыва и общения с доставкой и поддержкой</p>`;
+            out += `</div>`;
+            $('.popup-text').html(out);
+
         }
     );
 }
@@ -165,7 +171,7 @@ function addToDB(ename, email, ephone, street, house, flat) {
 $(document).ready(function (){
     loadCart();
     $('.send-email').on('click', sendEmail);
-    $('.checkbox').on('change', function (){
+    $('.button_delivery').on('click', function (){
         $('.delivery').toggle();
     })
 })

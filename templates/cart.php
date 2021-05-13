@@ -20,7 +20,7 @@
                         <p class="email-field__text">Email: <input type="text" id="email" class="email-field__input"></p>
                         <p class="email-field__text">Телефон: <input type="text" id="ephone" class="email-field__input"></p>
                         <div class="delivery-input">
-                            <p class="delivery-text">Доставка: <input class="checkbox" type="checkbox" name="a2"></p>
+                            <p class="delivery-text"><button class="button_delivery">Доставка<button></p>
                         </div>
                     </div>
                     <div class="delivery">
