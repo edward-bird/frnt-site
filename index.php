@@ -38,6 +38,9 @@ switch ($route) {
     case 'reviews':
         require 'templates/information/reviews.php';
         break;
+    case 'search':
+        require 'templates/search.php';
+        break;
 
     case 'kitchen':
     case 'bedroom':

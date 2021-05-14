@@ -3,6 +3,7 @@
     <div class="content-cart">
             <div class="main-cart"></div>
     </div>
+
     <div id = "popup" class="popup email-field">
         <a href="#" class="popup-area"></a>
         <div class="popup-body">

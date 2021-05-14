@@ -4,14 +4,14 @@ function init(){
         '    <div class="admin-panel">\n' +
         '        <div class="goods-out"></div>\n' +
         '        <h2 class="admin-panel__h">Товар</h2>\n' +
+        '        <button class="good-delete">Удалить</button>' +
         '        <p>Имя <input type="text" id="gname"></p>\n' +
         '        <p>Стоимость <input type="text" id="gcost"></p>\n' +
         '        <p>Описание <textarea id="gdescription"></textarea></p>\n' +
         '        <p>Изображение <input type="text" id="gimg"></p>\n' +
         '        <div class="img_goods"></div>\n' +
-        '        <p>Выбрать/изменить категорию' +
-
-
+        '        <input type="file" class="img-file" id="myfile" name="myfile2"/>' +
+        '        <p>Выбрать/изменить категорию </p>' +
         '       <select class="order-select"> ' +
         '       </select> ' +
         '        </p>\n' +
@@ -28,6 +28,7 @@ function init(){
         '\n' +
         '</div>';
     $('.admin').html(out);
+    $('.good-delete').on('click', goodsDelete);
     getOrderSelector();
     $.post(
         "../core/core.php",
@@ -36,6 +37,24 @@ function init(){
         },
         showGoods
     );
+}
+
+function goodsDelete(){
+    if ($('#gid').val() !== ''){
+        $.post(
+            "../core/core.php",
+            {
+                "action" : "deleteGoods",
+                "id_product" : $('#gid').val()
+            },
+            function (data){
+                if (data == 1){
+                    alert("Запись удалена");
+                    location.reload();
+                }
+            }
+        );
+    }
 }
 
 function showGoods(data){
@@ -132,8 +151,8 @@ function selectOneGoods(id, func){
 
 function saveToDb(){
     let id = $('#gid').val();
-    console.log($('.order-select').val());
-    if (id !== ''){
+    console.log(id);
+    if (id !== '' ){
         $.post(
             "../core/core.php",
             {
@@ -169,11 +188,14 @@ function saveToDb(){
                 if (data == 1){
                     alert('Запись добавлена');
                     location.reload();
+                } else {
+                    console.log(data);
                 }
             }
         );
     }
 }
+
 
 
 
@@ -191,6 +213,7 @@ $(document).ready(function () {
                 $('.add-to-db').on('click', saveToDb);
                 $('body').append(`<button class="admin-exit">Выход</button>`);
                 $('.admin-exit').on('click', adminExit);
+                $('.img-file').on('change', loadFile);
             } else {
                 let out = '';
                 out += ` <div id = "popup" class="popup email-field">
@@ -211,6 +234,44 @@ $(document).ready(function () {
         }
     );
 })
+
+function loadFile(){
+    let files = this.files;
+    event.stopPropagation();
+    event.preventDefault();
+    if( typeof files == 'undefined' ) return;
+    let data = new FormData();
+    $.each( files, function( key, value ){
+        data.append( key, value );
+    });
+
+    data.set('action', 'loadImg');
+    data.append( 'my_file_upload', '1' );
+
+    $.ajax({
+        url         : '../core/loadFiles.php',
+        type        : 'POST',
+        data        : data,
+        cache       : false,
+        dataType    : 'json',
+        processData : false,
+        contentType : false,
+        success     : function( respond, status, jqXHR ){
+            if( typeof respond.error === 'undefined' ){
+                let filesPath = respond.files + '';
+                let imageName = (filesPath).split('\\').pop().split('/').pop();
+                $('#gimg').val(imageName);
+                $('.img_goods').html(`<img src="../assets/images/product/${imageName}">`);
+            } else {
+                console.log('ОШИБКА: ' + respond.data );
+            }
+        },
+        error: function( jqXHR, status, errorThrown ){
+            console.log( 'ОШИБКА AJAX запроса: ' + status, jqXHR );
+        }
+
+    });
+}
 
 function adminExit(){
     $.post(

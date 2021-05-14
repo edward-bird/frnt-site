@@ -1,9 +1,6 @@
 <?php
 session_start();
-$servername = "localhost";
-$username = "root";
-$password = "root";
-$dbname = "frntr_list";
+
 
 function connect(){
     $conn = mysqli_connect("localhost", "root", "root", "furniture");
@@ -16,7 +13,6 @@ function connect(){
 
 
 function init(){
-    //вывожу список товаров
     $conn = connect();
     $category_id = $_POST["category_id"];
     $sql = "SELECT id_product, name FROM product WHERE id_category = '$category_id'";
@@ -88,6 +84,20 @@ function newGoods(){
         echo "Error: " . $conn->error;
     }
 
+    mysqli_close($conn);
+}
+
+function deleteGoods(){
+    $conn = connect();
+    $id_product = $_POST['id_product'];
+
+    $sql = "DELETE FROM product WHERE id_product = '$id_product'";
+
+    if ($conn->query($sql) === TRUE) {
+        echo 1;
+    } else {
+        echo "Error: " . $conn->error;
+    }
     mysqli_close($conn);
 }
 
@@ -356,14 +366,16 @@ function deleteReview(){
 function search(){
     $conn = connect();
     $name = $_POST['name'];
-    $sql = "SELECT * FROM `goods` WHERE `name` = '$name'";
+    $sql = "SELECT id_product, name, img, id_category, cost FROM `product` WHERE `name` LIKE '%$name%' OR `description` LIKE '%$name%'";
     $result = mysqli_query($conn, $sql);
-
     if (mysqli_num_rows($result) > 0) {
-
-        echo json_encode(mysqli_fetch_assoc($result));
+        $out = array();
+        while($row = mysqli_fetch_assoc($result)) {
+            $out[$row['id_product']] = $row;
+        }
+        echo json_encode($out);
     } else {
-        echo "0";
+        echo '0';
     }
     mysqli_close($conn);
 }

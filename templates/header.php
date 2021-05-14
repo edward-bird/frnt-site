@@ -5,6 +5,7 @@
 
     <meta name="viewport" content="width=device-width">
     <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/search.css">
     <?php
     switch ($route) {
         case 'shop':
